@@ -23,20 +23,37 @@ title('PCA')
 xlabel([num2str(1), ' component: ', num2str(explained(1))])
 ylabel([num2str(2), ' component: ', num2str(explained(2))])
 legend({'EV','EV10nME224HR_I','EV10nME224HR_I', 'ERBtransduced' },'location','best')
-
+%% 
 % boxplot
+
 figure
 boxplot(data)
 [I,IA,IB]=intersect(counts.ENSEMBL_ID,table2array(lengths(:,1)));
 data=(data(IA,:));
 lengths=table2array(lengths(IB,2));
+%% 
+% 
+% 
+% TPM
 
-%TPM
 temp=data./repmat(lengths,1,size(data,2));
 TPM=1000000*temp./repmat(nansum(temp),size(data,1),1);
-%FPKM
+%% 
+% The sum of TPM for each sample should be 1e6
+
+sum(TPM,1)
+%% 
+% FPKM
+
 temp=1000000*data./repmat(nansum(data),size(data,1),1);
 FPKM=temp./repmat(lengths,1,size(data,2));
+%% 
+% Densityplot
 
-
-
+figure
+hold on
+for i=1:size(TPM,2)    
+[probability_estimate,xi] = ksdensity(TPM(:,i));
+plot(xi,probability_estimate,':k','LineWidth',1);
+end
+hold off
