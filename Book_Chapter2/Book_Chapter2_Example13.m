@@ -28,7 +28,7 @@ model=orig_model;
 model = changeRxnBounds(model,{'v1'},[1],'u');
 disp([model.rxns num2cell(model.lb) num2cell(model.ub)])
 
-disp('Flux Variability Analysis (FVA) with v1=1 and v5=1.4')
+disp('Flux Variability Analysis (FVA) with v1<=1')
 [minFlux,maxFlux] = fluxVariability(model,100);
 [{'rxns' 'minFLux' 'maxFlux'}; model.rxns num2cell(minFlux) num2cell(maxFlux)]
 
@@ -42,7 +42,7 @@ disp([model.rxns num2cell(model.lb) num2cell(model.ub)])
 %Optimization for v2:
 model = changeObjective(model,'v2',1);
 
-disp('Flux Variability Analysis (FVA) with v1=1 and v5=1.4')
+disp('Flux Variability Analysis (FVA) with v1<=1 and v2 -> max')
 [minFlux,maxFlux] = fluxVariability(model,100);
 [{'rxns' 'minFLux' 'maxFlux'}; model.rxns num2cell(minFlux) num2cell(maxFlux)]
 
@@ -57,7 +57,7 @@ disp([model.rxns num2cell(model.lb) num2cell(model.ub)])
 %Optimization for v2:
 model = changeObjective(model,'v2',1);
 
-disp('Flux Variability Analysis (FVA) with v1=1 and v5=1.4')
+disp('Flux Variability Analysis (FVA) with v1<=1, v2<=0.6 and v2 -> max')
 [minFlux,maxFlux] = fluxVariability(model,100);
 [{'rxns' 'minFLux' 'maxFlux'}; model.rxns num2cell(minFlux) num2cell(maxFlux)]
 
@@ -73,6 +73,6 @@ disp([model.rxns num2cell(model.lb) num2cell(model.ub)])
 %Optimization for v2:
 model = changeObjective(model,'v2',1);
 
-disp('Flux Variability Analysis (FVA) with v1=1 and v5=1.4')
+disp('Flux Variability Analysis (FVA) with v1<=1, v2=0.6, v3=0.5 and v2 -> max')
 [minFlux,maxFlux] = fluxVariability(model,100);
 [{'rxns' 'minFLux' 'maxFlux'}; model.rxns num2cell(minFlux) num2cell(maxFlux)]
