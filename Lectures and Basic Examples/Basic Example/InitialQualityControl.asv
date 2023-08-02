@@ -1,0 +1,89 @@
+function[TableNumerics, Required4biomass, Results, minimalMedia]=InitialQualityControl(model, objective)
+fieldnames= {'mets', 'rxns', 'genes'};
+for i=1:numel(fieldnames)
+    if numel(unique(model.(fieldnames{i}))) == numel(model.(fieldnames{i}))
+    else
+        [~,idxu,idxc] = unique(model.(fieldnames{i}));
+        % count unique values (use histc in <=R2014b)
+        [count, ~, idxcount] = histcounts(idxc,numel(idxu));
+        % Where is greater than one occurence
+        idxkeep = count(idxcount)>1;
+        item=model.(fieldnames{i});
+        to_remove=item(idxkeep);
+        if i==2
+            model=removeRxns(model,to_remove(2:end));
+        else
+            ssss
+        end
+        
+    end
+end
+if isfield(model,'subSystems')
+if iscellstr( model.subSystems)
+        model.subSystems=model.subSystems;
+elseif iscell( model.subSystems)
+    if size(model.subSystems,2)==1
+        try model.subSytems=vertcat(model.subSystems{:})
+        catch
+            for i=1:numel(model.subSystems)
+                'Warning reactions are assigned to multiple pathways'
+                tmp=model.subSystems{i,1}{1}
+                if ischar(tmp)
+                    tmp=cellstr(tmp)
+                end
+                model.subSystems(i)=tmp;
+            end
+        end
+    end
+elseif ischar(model.subSystems)
+else
+end
+clear i count
+model.subSystems(cellfun('isempty',model.subSystems))=cellstr('');
+TableNumerics=table(numel(model.mets),numel(model.rxns),numel(model.genes), numel(unique(model.subSystems)));
+TableNumerics.Properties.VariableNames={'mets', 'rxns', 'genes', 'pathways'};
+
+else
+    TableNumerics=table(numel(model.mets),numel(model.rxns),numel(model.genes));
+TableNumerics.Properties.VariableNames={'mets', 'rxns', 'genes'};
+end
+disp('Numerics:')
+disp(TableNumerics)
+closedRxns=model.rxns(model.lb==0 & model.ub==0);
+disp('closed reactions');
+disp(closedRxns)
+Results.closed=closedRxns;
+
+bounds_span=min(abs(model.ub-model.lb));
+disp(strcat( 'bounds span: ',num2str(bounds_span)))
+Results.closed=bounds_span;
+
+
+disp(strcat('number of objectives:', num2str(numel(find(model.c)))));
+if sum(model.c ~=0 )>0
+model.rxns(model.c==1)
+end
+
+%% flux consistency
+A = fastcc_4_fastcormics(model, 1e-4,1);
+disp(strcat('consistency rate:', num2str(numel(A)/numel(model.rxns))));
+
+blocked=setdiff(1:numel(model.rxns),A);
+disp(strcat('blocked reactions:',num2str(numel(blocked))));
+Results.blocked=blocked;
+%% growth rate
+objective=contains(model.rxns, 'iomass')
+model = changeObjective(model,objective);
+sol=optimizeCbModel(model,'max','zero'); %minimal solutio
+sum(sol.x~=0) %number of non-zero fluxes
+if isfield(model, 'subSystems')
+temp=model.subSystems(sol.v~=0);
+[uc, ~, idc] = unique( temp ) ;
+counts = accumarray( idc, ones(size(idc)) ) ;
+Required4biomass=table(uc,counts); %involved subSystems
+else
+    Required4biomass=[]
+end
+% minimal medium
+minimalMedia=intersect(model.rxns(sol.v<0),model.rxns(findExcRxns(model)));
+end

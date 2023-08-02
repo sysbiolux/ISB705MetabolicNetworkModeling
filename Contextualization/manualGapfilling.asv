@@ -1,0 +1,283 @@
+clear 
+
+%In this script we want to enhable the model to produce Luteine and S_epsilon_45_Carotene
+% two demand reaction were added : epsilon carotene harvesting Luteinharvesting
+epsilon=1e-4;
+%set the path
+path='C:\Users\maria.pacheco\OneDrive - University of Luxembourg\Documents\GitHub\basicAnalysis';
+model=readCbModel(strcat(path,'\Model\AraGEMconstraintFree.xml'));
+%load(strcat(path,'\Model\Arabidopsis.mat'), 'model');
+changeCobraSolver('ibm_cplex');
+% check if the model can produce Lutein
+
+[TableNumerics, Required4biomass, Results, minimalMedia, model]=InitialQualityControl(model, 'BIO_L');
+rxns=findRxnsFromMets(model,model.mets(find(contains(model.metNames, 'Lutein'))));
+disp(rxns)
+model=addReaction(model, 'Luteinharvesting',  'S_Lutein_c[C_c] ->');
+model=changeObjective(model,'Luteinharvesting');
+sol_ori=optimizeCbModel(model,'max','zero');
+sol_ori.f
+% add demands to deadend
+if sol_ori.f < epsilon
+[ model_corrected,deadEnd]=findDeadEndsFastbox(model)
+% model_corrected.rxnNames(end+1:numel(model_corrected.rxns))=model_corrected.rxns(numel(model_corrected.rxnNames)+1:numel(model_corrected.rxns));
+% model_corrected.c(end+1:numel(model_corrected.rxns))=0;
+model=model_corrected;
+sol_ori=optimizeCbModel(model,'max','zero');
+sol_ori.f
+end
+rxnsRequired4Obj=model.rxns(sol_ori.x~=0)
+T=table(rxnsRequired4Obj, printRxnFormula(model,rxnsRequired4Obj),sol_ori.x(ismember(model.rxns,rxnsRequired4Obj)))
+% table 1 shows that we form Lutein from Isopentenyl di p which correspond
+% to the literature 'S_Dehydrodolichol_32_diphosphate_c[C_c]  <=> ' that
+% enters from a sink is being converted into Isopentenyl
+% so we close this input
+model.lb(ismember(model.rxns,'SinkToRemoveDeadEnd_I_S_G13032_c[C_c]_S_G13032_c[C_c]'))=0;
+sol_ori=optimizeCbModel(model,'max','zero');
+sol_ori.f
+rxnsRequired4Obj=model.rxns(sol_ori.x~=0)
+T2=table(rxnsRequired4Obj, printRxnFormula(model,rxnsRequired4Obj),sol_ori.x(ismember(model.rxns,rxnsRequired4Obj)))
+% the lutein is connected to the mevalonate pathway and the pathways starts
+% at AcetylCoA
+%Now we need to connect it to the glycolyse because acetylCoa comes from
+%'S_Benzoyl_32_acetyl_45_CoA_c[C_c]  <=> '
+%Pyruvate is converted into acetylcoa in the mitocondria however no reactions 
+%transport accetycoa in the cytoplasma 
+rxns=findRxnsFromMets(model,'S_Pyruvate_m[C_m]')
+printRxnFormula(model, rxns)
+% lets add it
+model=addReaction(model,'S_Acetyl_45_CoA_trans', 'S_Acetyl_45_CoA_c[C_c] <=> S_Acetyl_45_CoA_m[C_m]')
+
+%lets force the flux to come from pyruvate
+sol_ori=optimizeCbModel(model,'max','zero');
+
+sol_ori.f
+rxnsRequired4Obj=model.rxns(sol_ori.x~=0)
+T3=table(rxnsRequired4Obj, printRxnFormula(model,rxnsRequired4Obj),sol_ori.x(ismember(model.rxns,rxnsRequired4Obj)))
+%By adding sink reactions we allowed fluxes to enter the systems we need to
+%close the input that are not needed
+val=T3.Var3(ismember(T3.rxnsRequired4Obj,'R01978_c'))
+model.lb(end)=
+model.ub(end)=-1000
+Lets force all the flux to go through the transporter we added
+xxx
+model.lb(ismember(model.rxns,T3.rxnsRequired4Obj(55:69)))=0;
+sol_ori=optimizeCbModel(model,'max','zero');
+
+sol_ori.f
+rxnsRequired4Obj=model.rxns(sol_ori.x~=0)
+T4=table(rxnsRequired4Obj, printRxnFormula(model,rxnsRequired4Obj),sol_ori.x(ismember(model.rxns,rxnsRequired4Obj)))
+
+
+% [met,~]=find(model.S(:,ismember(model.rxns,rxnsRequired4Obj)))
+% disp('metabolites in the solution')
+% unique(model.mets(met))
+% %% Lycopene == is alpha_45_Zeacarotene in the model
+% %There is no flux between Isopentyl and mevalonate
+% rxns=findRxnsFromMets(model,'S_Isopentenyl_32_diphosphate_c[C_c]')
+% model.lb(ismember(model.rxns,'SinkToRemoveDeadEnd_I_S_G13032_c[C_c]_S_G13032_c[C_c]'))=0;
+% sol_ori=optimizeCbModel(model,'max','zero');
+% rxnsRequired4Obj=model.rxns(sol_ori.x~=0)
+% rxnsRequired4Obj2=rxnsRequired4Obj(find(contains(rxnsRequired4Obj,'SinkToRemoveDeadEnd')))
+% rxnsRequired4Obj3=rxnsRequired4Obj(find(contains(rxnsRequired4Obj,'dead_end_II')))
+% % 
+% T2=table(rxnsRequired4Obj, printRxnFormula(model,rxnsRequired4Obj),sol_ori.x(ismember(model.rxns,rxnsRequired4Obj)))
+% 
+% model.lb(ismember(model.rxns,'SinkToRemoveDeadEnd_I_S_2_44_3_45_Dimethyl_45_5_45_phytylquinol_c[C_c]_S_2_44_3_45_Dimethyl_45_5_45_phytylquinol_c[C_c]'))=0;
+% 
+% sol_ori=optimizeCbModel(model,'max','zero');
+% rxnsRequired4Obj=model.rxns(sol_ori.x~=0)
+% rxnsRequired4Obj2=rxnsRequired4Obj(find(contains(rxnsRequired4Obj,'SinkToRemoveDeadEnd')))
+% rxnsRequired4Obj3=rxnsRequired4Obj(find(contains(rxnsRequired4Obj,'dead_end_II')))
+% % 
+% T3=table(rxnsRequired4Obj, printRxnFormula(model,rxnsRequired4Obj),sol_ori.x(ismember(model.rxns,rxnsRequired4Obj)))
+% 
+% rxns=findRxnsFromMets(model,'S_Glucose_c[C_c]')
+% model=addReaction(model,'Trans_acetylCoA','S_Acetyl_45_CoA_m[C_m] <=> S_Acetyl_45_CoA_c[C_c]')
+% model=addReaction(model, 'to_add', S_beta_45_D_45_Fructose_32_6_45_phosphate_c
+% %model.lb(ismember(model.rxns,'R00209_m'))=500;
+% %model.lb(ismember(model.rxns,'R00200_c'))=500;
+% %model.lb(ismember(model.rxns,'R04779_c'))=500;
+% %model.lb(ismember(model.rxns,{'dead_end_II_S_Lipoamide_c[C_c]'}))=0
+% %model.lb(contains(model.rxns,'SinkToRemoveDeadEnd'))=0
+% C=find(ismember(model.rxns,{'Luteinharvesting','R04779_c', 'R01518_c', 'R02740_c'}))
+% A=fastcore_4_rfastcormics(C,model,1e-4,1)
+% tmp=model.lb(A)
+% model.lb(contains(model.rxns,'SinkToRemoveDeadEnd'))=0
+% model.lb(A)=tmp;
+% 
+% 
+% 
+% 
+% sol_ori=optimizeCbModel(model,'max','zero');
+% rxnsRequired4Obj=model.rxns(sol_ori.x~=0)
+% rxnsRequired4Obj2=rxnsRequired4Obj(find(contains(rxnsRequired4Obj,'SinkToRemoveDeadEnd')))
+% rxnsRequired4Obj3=rxnsRequired4Obj(find(contains(rxnsRequired4Obj,'dead_end_II')))
+% % 
+% %close sink that should not be inputs
+% 
+% T4=table(rxnsRequired4Obj, printRxnFormula(model,rxnsRequired4Obj),sol_ori.x(ismember(model.rxns,rxnsRequired4Obj)))
+% 
+% 
+% % model.lb(ismember(model.rxns, tmp(2)))=0
+% % sol_ori=optimizeCbModel(model,'max','zero');
+% % 
+% % rxnsRequired4Obj=model.rxns(sol_ori.x~=0)
+% % rxnsRequired4Obj2=rxnsRequired4Obj(find(contains(rxnsRequired4Obj,'SinkToRemoveDeadEnd')))
+% % rxnsRequired4Obj3=rxnsRequired4Obj(find(contains(rxnsRequired4Obj,'dead_end_II')))
+% % 
+% % T3=table(rxnsRequired4Obj, printRxnFormula(model,rxnsRequired4Obj),sol_ori.x(ismember(model.rxns,rxnsRequired4Obj)))
+% % 
+% % 
+% % 
+% % %The reason is an input from the Sink reaction added by fapfilling algo
+% % 
+% % % model.c=zeros(numel(model.rxns),1);
+% % % % try to optimize again
+% % % model=changeObjective(model,'Luteinharvesting');
+% % % C=find(contains(model.rxns, 'Luteinharvesting'));
+% % % artificial=setdiff(model_corrected.rxns, model.rxns),
+% % % t=find(ismember(model.rxns,model_corrected.rxns)); %indices of medium exchange reactions
+% % % numel(t)
+% % % model.S(:,C)=model.S(:,C)*1000;
+% % % 
+% % % %% metabolites that needs to be included
+% % % metabolites={'Lycopene', 'Phytophoeme', 'Geranyl', 'S__40_R_41__45_Mevalonate[c]', 'S_Pyruvate[c]', 'S_Glucose[c]'};
+% % % mets=model.mets(contains(model.mets, metabolites));
+% % % Rxns=findRxnsFromMets(model,mets);
+% % % RxnInTheModel=intersect(Rxns,model.rxns(A))
+% % % Table=table(RxnInTheModel, printRxnFormula(model, RxnInTheModel));
+% % % vvvv
+% % % Rxns={'R02245_c','R07916_c', 'RN03_c', 'R00200_c'}
+% % % to_close_keep=[];
+% % % to_close=[];
+% % % 
+% % % % check if the reactions are unblocked
+% % % A_tmp=fastcc_4_rfastcormics(model,1e-4,1)
+% % % model_temp=removeRxns(model, model.rxns(setdiff(1:numel(model.rxns),A_tmp)))
+% % % setdiff(Rxns, model.rxns(A_tmp))
+% % % % remove demand rxns that are not required for the reactions of interest to
+% % % % carry a flux
+% % % for counter =1: numel(Rxns)    
+% % %     if isempty(intersect(Rxns(counter), model.rxns(A)))
+% % %         tmp=model;
+% % %         tmp.lb(ismember(model.rxns,Rxns(counter)))=1000
+% % %         sol=optimizeCbModel(tmp)
+% % %         sol.f
+% % %         if sol.f~=0 && ~isempty(sol.f) && ~isnan(sol.f)
+% % %             A1=fastcore_4_rfastcormics(C, tmp, 1e-4, t);
+% % %             to_close=setdiff(artificial, model.rxns(A1));
+% % %             to_close_keep=[to_close_keep;to_close];
+% % %             'close'
+% % %             numel(unique(to_close_keep))
+% % %             model.lb(ismember(model.rxns, to_close_keep))=0;
+% % %             model.ub(ismember(model.rxns, to_close_keep))=0;
+% % %             A2=fastcore_4_rfastcormics(C, model, 1e-4, t);
+% % %             to_close=setdiff(artificial, model.rxns(A2));
+% % %             to_close_keep=unique([to_close_keep;to_close]);
+% % %             A=A2
+% % % 
+% % %         else
+% % %             
+% % %         end
+% % %         
+% % %         while  isempty(intersect(model.rxns(A2), Rxns(counter))) & numel(unique(to_close))< numel(unique(to_close_keep))
+% % %             if isempty(intersect(model.rxns(A2), Rxns(counter)))
+% % %                 tmp=model;
+% % %                 tmp.lb(ismember(model.rxns,Rxns(counter)))=100;
+% % %                 sol=optimizeCbModel(tmp);
+% % %                 sol.f
+% % %                 if sol.f~=0
+% % %                     A=fastcore_4_rfastcormics(C, tmp, 1e-4, t);
+% % %                     to_close=setdiff(artificial, model.rxns(A));
+% % %                     to_close_keep=unique([to_close_keep;to_close]);
+% % %                   
+% % %                     model.lb(ismember(model.rxns, to_close_keep))=0;
+% % %                     model.ub(ismember(model.rxns, to_close_keep))=0;
+% % %                     A=fastcore_4_rfastcormics(C, model, 1e-4, t);
+% % %                     
+% % %                 else
+% % %                     sss
+% % %                 end
+% % %                 
+% % %                 
+% % %             else
+% % %                 vvv
+% % %             end
+% % %             
+% % %         end
+% % %         
+% % %     end
+% % % end
+% % % 
+% % % Table=table(model.rxns(A),printRxnFormula(model,model.rxns(A)))
+% % % sol=optimizeCbModel(model, 'max', 'zero')
+% % % table(model.rxns(sol.x~=0),printRxnFormula(model,model.rxns(sol.x~=0)))
+% % % 
+% % % model=addReaction(model, 'diphosphomevalonate decarboxylase','S__40_R_41__45_5_45_Diphosphomevalonate[c]  + S_ATP[c] -> S_ADP[c] + S_Phosphatidate[c] + S_Isopentenyl_32_diphosphate[c]   + S_CO2[c]') 
+% % % model=addReaction(model, 'CO2_trans','S_CO2[c] -> S_CO2[e]') 
+% % % model=addReaction(model, 'CO2_ex','S_CO2[e] -> ') 
+% % % model=addReaction(model, 'PI_trans','S_Phosphatidate[c] -> S_Phosphatidate[e]') 
+% % % model=addReaction(model, 'S_Phosphatidate_ex','S_Phosphatidate[e] -> ') 
+% % % model=removeRxns(model, {'SinkToRemoveDeadEnd_I_S_1_45__40_2_45_Carboxyphenylamino_41__45_1_39__45_deoxy_45_D_45_ribulose_32_5_39__45_phosphate[c]_S_1_45__40_2_45_Carboxyphenylamino_41__45_1_39__45_deoxy_45_D_45_ribulose_32_5_39__45_phosphate[c]'})
+% % % 
+% % % Rxns=union(Rxns,model.rxns(end-4:end))
+% % % %%
+% % % for counter =1: numel(Rxns)
+% % %     if isempty(intersect(Rxns(counter), model.rxns(A)))
+% % %         tmp=model;
+% % %         tmp.lb(ismember(model.rxns,Rxns(counter)))=1000;
+% % %         sol=optimizeCbModel(tmp)
+% % %         sol.f
+% % %         if sol.f~=0 && ~isempty(sol.f) & ~isnan(sol.f)
+% % %             A=fastcore_4_rfastcormics(C, tmp, 1e-4, t);
+% % %             to_close=setdiff(artificial, model.rxns(A));
+% % %             to_close_keep=[to_close_keep;to_close];
+% % %             'close'
+% % %             numel(unique(to_close_keep))
+% % %             model.lb(ismember(model.rxns, to_close_keep))=0;
+% % %             model.ub(ismember(model.rxns, to_close_keep))=0;
+% % %             A=fastcore_4_rfastcormics(C, model, 1e-4, t);
+% % %             
+% % %         else
+% % %         end
+% % %         while isempty(intersect(model.rxns(A), Rxns(counter))) & numel(unique(to_close))< numel(unique(to_close_keep))
+% % %          
+% % %             
+% % %             
+% % %             if isempty(intersect(model.rxns(A), Rxns(counter)))
+% % %                 tmp=model;
+% % %                 tmp.lb(ismember(model.rxns,Rxns(counter)))=100;
+% % %                 sol=optimizeCbModel(tmp);
+% % %                 sol.f
+% % %                 if sol.f~=0
+% % %                     A=fastcore_4_rfastcormics(C, tmp, 1e-4, t);
+% % %                     to_close=setdiff(artificial, model.rxns(A));
+% % %                     to_close_keep=[to_close_keep;to_close];
+% % %                     'close'
+% % %                     numel(unique(to_close_keep))
+% % %                     model.lb(ismember(model.rxns, to_close_keep))=0;
+% % %                     model.ub(ismember(model.rxns, to_close_keep))=0;
+% % %                     A=fastcore_4_rfastcormics(C, model, 1e-4, t);
+% % %                     
+% % %                 else
+% % %                     sss
+% % %                 end
+% % %                 
+% % %                 
+% % %             else
+% % %                 vvv
+% % %             end
+% % %             
+% % %         end
+% % %         
+% % %     end
+% % % end
+% % % Table=table(model.rxns(A),printRxnFormula(model,model.rxns(A)))
+% % % model=removeRxns(model,'SinkToRemoveDeadEnd_I_S_2_44_2_45_Dichloroacetaldehyde[c]_S_2_44_2_45_Dichloroacetaldehyde[c]')
+% % % model=removeRxns(model,'SinkToRemoveDeadEnd_I_S_2_45_Methyl_45_1_45_hydroxybutyl_45_ThPP[c]_S_2_45_Methyl_45_1_45_hydroxybutyl_45_ThPP[c]')
+% % % model=removeRxns(model,'SinkToRemoveDeadEnd_I_S_2_44_5_45_Dihydroxypyridine[c]_S_2_44_5_45_Dihydroxypyridine[c]')
+% % % 
+% % % sol=optimizeCbModel(model, 'max', 'zero')
+% % % table(model.rxns(sol.x~=0),printRxnFormula(model,model.rxns(sol.x~=0)), sol.x(sol.x~=0))
+% % % end
