@@ -13,17 +13,17 @@ changeCobraSolver('ibm_cplex');
 [TableNumerics, Required4biomass, Results, minimalMedia, model]=InitialQualityControl(model, 'BIO_L');
 rxns=findRxnsFromMets(model,model.mets(contains(model.metNames, 'Lutein')));
 disp(rxns)
+
+%There is no input reaction for Starck so we add it
 model=addReaction(model, 'Starch_stock',  'S_Starch_p[C_p] <=>');
 
 model=addReaction(model, 'Luteinharvesting',  'S_Lutein_c[C_c] ->');
 model=changeObjective(model,'Luteinharvesting');
 sol_ori=optimizeCbModel(model,'max','zero');
 sol_ori.f
-% add demands to deadend
+% add demands to deads
 if sol_ori.f < epsilon
 [ model_corrected,deadEnd]=findDeadEndsFastbox(model);
-% model_corrected.rxnNames(end+1:numel(model_corrected.rxns))=model_corrected.rxns(numel(model_corrected.rxnNames)+1:numel(model_corrected.rxns));
-% model_corrected.c(end+1:numel(model_corrected.rxns))=0;
 model=model_corrected;
 sol_ori=optimizeCbModel(model,'max','zero');
 sol_ori.f
