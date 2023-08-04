@@ -1,4 +1,4 @@
-%% ISB705: Advanced Systems Biology II
+ISB705: Advanced Systems Biology II
 % *Maria Pires Pacheco, Patricia Martins Conde, Tamara Bintener, and Thomas 
 % Sauter*
 

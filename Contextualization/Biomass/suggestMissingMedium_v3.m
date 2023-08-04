@@ -2,6 +2,8 @@
 clear
 %addpath('C:\Users\thomas.sauter\Documents\MATLAB\rFASTCORMICS_0320')
 addpath('C:\Users\maria.pacheco\OneDrive - University of Luxembourg\Documents\GitHub\rFASTCORMICS')
+addpath('C:\Users\maria.pacheco\Documents\GitHub\rFASTCORMICS')
+
 changeCobraSolver('ibm_cplex');
 load('brain_model.mat');
 load('medium_example.mat')
@@ -121,6 +123,6 @@ sol.f
 sol = optimizeCbModel(final,'max');
 
 end
-    [~, IA, IB]=intersect(final.rxns, exRxns);
+[~, IA, IB]=intersect(final.rxns, exRxns);
 table(exRxns(IB),sol.x(IA))
 

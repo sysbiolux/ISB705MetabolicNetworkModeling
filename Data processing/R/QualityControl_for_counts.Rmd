@@ -7,6 +7,7 @@ output: html_document
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
+
 ```
 
 
@@ -69,6 +70,7 @@ df_len <- df_len[!is.na(df_len$size),]
 fpkm <- apply(df_len[,4:ncol(df_len)], 2, function(x) counts_to_fpkm(x, df_len$size))
 fpkm <- data.frame(fpkm)
 rownames(fpkm) <- df_len$ensembl_gene_id
+head(fpkm)
 ```
 
 
@@ -126,8 +128,10 @@ for (s in 2:length(cond)){
 ```
 Print fpkm
 ```{r}
-name=paste(getwd(),"/Quality Control/Output/fpkm.txt",sep="")
-name=gsub("/", "//", name)
-write.table(fpkm, name, append = FALSE)
+name=paste(getwd(),"/QualityControl/Output/fpkm.txt",sep="")
+name=gsub("//", "/", name)
+file.remove(name)
+name
+#write.table(fpkm, name)
 ```
  
