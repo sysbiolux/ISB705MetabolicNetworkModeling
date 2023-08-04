@@ -2,7 +2,7 @@
 % Model
 % uncomment the solver that you want to use
 %changeCobraSolver('glpk')
-%changeCobraSolver('ibm_cplex')
+changeCobraSolver('ibm_cplex')
 
 ReactionFormulas = {'->  A','A -> B','A + B ->'};
 ReactionNames = {'v1','v2','v3'};

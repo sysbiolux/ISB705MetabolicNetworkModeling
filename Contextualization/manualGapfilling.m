@@ -4,13 +4,15 @@ clear
 % two demand reaction were added : epsilon carotene harvesting Luteinharvesting
 epsilon=1e-4;
 %set the path
-path='C:\Users\maria.pacheco\OneDrive - University of Luxembourg\Documents\GitHub\basicAnalysis';
+path='C:\Users\maria.pacheco\Documents\GitHub\basicAnalysis';
+%path='C:\Users\maria.pacheco\OneDrive - University of Luxembourg\Documents\GitHub\basicAnalysis';
 model=readCbModel(strcat(path,'\Model\AraGEMconstraintFree.xml'));
 %load(strcat(path,'\Model\Arabidopsis.mat'), 'model');
 changeCobraSolver('ibm_cplex');
 % check if the model can produce Lutein
 
 [TableNumerics, Required4biomass, Results, minimalMedia, model]=InitialQualityControl(model, 'BIO_L');
+
 rxns=findRxnsFromMets(model,model.mets(contains(model.metNames, 'Lutein')));
 disp(rxns)
 
@@ -83,5 +85,6 @@ sol_ori=optimizeCbModel(model,'max','zero');
 sol_ori.f;
 rxnsRequired4Obj=model.rxns(sol_ori.x~=0);
 T5=table(rxnsRequired4Obj, printRxnFormula(model,rxnsRequired4Obj),sol_ori.x(ismember(model.rxns,rxnsRequired4Obj)));
+
 
 
