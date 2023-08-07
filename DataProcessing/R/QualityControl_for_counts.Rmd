@@ -1,0 +1,98 @@
+---
+title: "QualityControl"
+author: "Systems biology group- University of Luxembourg"
+date: "2023-04-17"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+set path
+
+
+```{r}
+knitr::opts_knit$set(root.dir = 'C:/Users/maria.pacheco/OneDrive - University of Luxembourg/Documents/GitHub/ISB705MetabolicNetworkModelling/')
+```
+
+load libraries
+```{r}
+
+library(readr)
+library(FactoMineR)
+library(factoextra)
+#library(FactoInvestigate)
+```
+
+Read data and replace NA by zeros
+```{r}
+
+fpkm<- read_delim("data/GSE112568_fpkm_table_CRC_C_Williams_Addendum.txt",   delim = "\t", escape_double = FALSE,     trim_ws = TRUE)
+fpkm[is.na.data.frame(fpkm)]<-0
+```
+
+
+```
+
+log transform data and transpose data
+```{r}
+logdata <- t(log2(fpkm[,-c(1,2)]+1))
+cond=c('EV', 'EV', 'EV10nME224HR_I',  'EV10nME224HR_I','1uG124hr_I', '1uG124hr_I', 'ERBtransduced','ERBtransduced')
+col=cond
+pal=c("EV" = "#FF007F", "EV10nME224HR_I" = "#FFAB00", "1uG124hr_I" = "blue", 
+      "ERBtransduced" = "#C0CA33") 
+```
+
+
+Do a Principal Component Analysis 
+
+1st and 2nd dimension
+```{r}
+PC <- PCA(logdata, graph = FALSE)
+fviz_pca_ind(PC, col.ind=col,pointshape = 20,pointsize = 2, geom =  c("point", "text"),palette = pal)
+```
+1st and 3rd dimension
+```{r}
+PC <- PCA(logdata, graph = FALSE)
+#x11()
+name=paste("Output/Pca_D1-D3",".png", sep="")
+#png(name, width=1000, height=400)
+fviz_pca_ind(PC, col.ind=col,pointshape = 20,pointsize = 2, geom =  c("point", "text"),palette = pal,axes=c(1,3))
+#dev.off()
+
+```
+boxplot
+```{r}
+x=1:dim(logdata)[1]
+x
+boxplot(logdata~x,
+main = "Data distribution",
+names = col,
+col = c("gray"),
+border = "brown",
+horizontal = FALSE,
+notch = TRUE
+)
+
+```
+Density plot
+```{r}
+color= 1:length(col)
+d <- density(logdata[1,])
+plot(d,main="density", ylab="Density", xlim=c(0,4))
+for (s in 2:length(cond)){
+  d <- density(logdata[s,])
+  lines(d,col=color[s],xlim=c(0,2))
+}
+```
+Print fpkm
+```{r}
+
+name=paste(getwd(),"/Data/FPKM.txt",sep="")
+name=gsub("//", "/", name)
+name
+write.table(fpkm, name)
+```
+ 
