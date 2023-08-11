@@ -1,7 +1,7 @@
 function[TableNumerics, Required4biomass, Results, minimalMedia, model, ConsistentModel]=InitialQualityControl(model, objective)
 % (c) Maria Pires Pacheco and Thomas Sauter (University of Luxembourg)
 [model,ConsistentModel, ~,~ , ~]=checkModel(model);
-fields2check={'mets','rxns','genes'}
+fields2check={'mets','rxns','genes'};
 for i=1:numel(fields2check)
     if numel(unique(model.(fields2check{i}))) == numel(model.(fields2check{i}))
     else
@@ -75,6 +75,11 @@ Results.closed=closedRxns;
 bounds_span=min(abs(model.ub-model.lb));
 disp(strcat( 'bounds span: ',num2str(bounds_span)))
 Results.bounds_span=bounds_span;
+if sum(~cellfun('isempty',strfind(model.mets,'[')))== numel(model.mets)
+model.metcomp = regexprep(model.mets, '(.*?)\[',''); % removes everything before the bracket, including the bracket
+model.metcomp = regexprep(model.metcomp, ']',''); 
+Results.compartements =unique(model.metcomp);
+end
 
 
 disp(strcat('number of objectives:', num2str(numel(find(model.c)))));
@@ -90,8 +95,11 @@ blocked=setdiff(model.rxns,ConsistentModel.rxns);
 disp(strcat('blocked reactions:',num2str(numel(blocked))));
 Results.blocked=blocked;
 %% growth rate
+save
+
 ConsistentModel = changeObjective(ConsistentModel,objective);
-sol=optimizeCbModel(ConsistentModel,'max','zero'); %minimal solutio
+
+sol=optimizeCbModel(ConsistentModel,'max','zero'); %minimal solution
 sum(sol.x~=0) %number of non-zero fluxes
 if ~isempty(sol.f)
 if isfield(ConsistentModel, 'subSystems')
@@ -102,10 +110,10 @@ if isfield(ConsistentModel, 'subSystems')
 else
     Required4biomass=[];
 end
-save
-exR=find(findExcRxns(ConsistentModel))
-[~,match]=find(ConsistentModel.S(:,exR)<0)
-[~,match2]=find(ConsistentModel.S(:,exR)>0)
+
+exR=find(findExcRxns(ConsistentModel));
+[~,match]=find(ConsistentModel.S(:,exR)<0);
+[~,match2]=find(ConsistentModel.S(:,exR)>0);
 
 % minimal medium
 minimalMedia=intersect(ConsistentModel.rxns(sol.v<0),ConsistentModel.rxns(exR(match)));
@@ -120,5 +128,9 @@ secretion=union(secretion, secretion2);
 Flux=table(ConsistentModel.rxns,sol.v);
 Results.flux=Flux;
 Results.secretion=secretion;
+Results.Ex_consistent=ConsistentModel.rxns(exR);
+exR=find(findExcRxns(model));
+Results.Ex_all=model.rxns(exR);
+
 end
 end
