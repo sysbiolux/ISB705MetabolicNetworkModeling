@@ -89,7 +89,7 @@ for (s in 2:length(cond)){
 ```
 Print fpkm
 ```{r}
-name=paste(getwd(),"/Quality Control/Output/fpkm.txt",sep="")
+name=paste(getwd(),"/DataProcessing/fpkm.txt",sep="")
 name=gsub("/", "//", name)
 write.table(fpkm, name)
 

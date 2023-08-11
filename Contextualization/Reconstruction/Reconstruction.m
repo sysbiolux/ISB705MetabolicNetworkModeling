@@ -1,4 +1,5 @@
 %% Building of context-specific models using rFASTCORMICS (Pacheco et al, 2019)
+clear
 sampleModel=1; consensusModel=1;
 
 if consensusModel==1  && sampleModel==1
@@ -87,7 +88,9 @@ if sum(ismember(name,'consensus'))
 
 end
 ModelMatrix.consistentModel=model;
-
+if sum(MatrixConsensus(ismember(model.rxns, 'biomass_reaction'),:)==0)>1
+xxx
+end
 %% sample-specific models
 if sum(ismember(name,'sample'))
     sampleModelsMatrix =zeros(numel(model.rxns), numel(colnames));
@@ -97,5 +100,8 @@ if sum(ismember(name,'sample'))
     end
     ModelMatrix.sample=sampleModelsMatrix;
     ModelMatrix.colnames=colnames;
+end
+if sum(sampleModelsMatrix(ismember(model.rxns, 'biomass_reaction'),:)==0)>1
+xxx
 end
 save Reconstruction

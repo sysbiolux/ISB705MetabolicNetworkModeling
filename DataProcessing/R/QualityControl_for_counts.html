@@ -358,7 +358,7 @@ display: none;
 
 
 <p>set path</p>
-<pre class="r"><code>knitr::opts_knit$set(root.dir = &#39;C:/Users/maria.pacheco/OneDrive - University of Luxembourg/Documents/GitHub/ISB705MetabolicNetworkModelling/&#39;)</code></pre>
+<pre class="r"><code>knitr::opts_knit$set(root.dir = &#39;C:/Users/maria.pacheco/Documents/GitHub/basicAnalysis/&#39;)</code></pre>
 <p>load libraries</p>
 <pre class="r"><code>library(readr)
 library(FactoMineR)
@@ -427,7 +427,7 @@ Print fpkm</p>
 <pre class="r"><code>name=paste(getwd(),&quot;/Data/FPKM.txt&quot;,sep=&quot;&quot;)
 name=gsub(&quot;//&quot;, &quot;/&quot;, name)
 name</code></pre>
-<pre><code>## [1] &quot;C:/Users/maria.pacheco/OneDrive - University of Luxembourg/Documents/GitHub/ISB705MetabolicNetworkModelling/Data/FPKM.txt&quot;</code></pre>
+<pre><code>## [1] &quot;C:/Users/maria.pacheco/Documents/GitHub/basicAnalysis/Data/FPKM.txt&quot;</code></pre>
 <pre class="r"><code>write.table(fpkm, name)</code></pre>
 
 

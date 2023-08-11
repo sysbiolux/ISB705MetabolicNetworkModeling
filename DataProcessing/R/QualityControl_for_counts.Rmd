@@ -14,7 +14,7 @@ set path
 
 
 ```{r}
-knitr::opts_knit$set(root.dir = 'C:/Users/maria.pacheco/OneDrive - University of Luxembourg/Documents/GitHub/ISB705MetabolicNetworkModelling/')
+knitr::opts_knit$set(root.dir = 'C:/Users/maria.pacheco/Documents/GitHub/basicAnalysis/')
 ```
 
 load libraries
