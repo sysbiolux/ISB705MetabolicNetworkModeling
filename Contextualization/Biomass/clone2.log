@@ -1,0 +1,85 @@
+
+Log for 'CPLEX' Clone_2 (V12.10.0.0) Wed Aug 16 12:13:49 2023
+
+Tried aggregator 1 time.
+LP Presolve eliminated 848 rows and 950 columns.
+Aggregator did 679 substitutions.
+Reduced LP has 675 rows, 1974 columns, and 8915 nonzeros.
+Presolve time = 0.00 sec. (4.50 ticks)
+
+Iteration log . . .
+Iteration:     1    Scaled infeas =        540823.394775
+Iteration:   244    Scaled infeas =         42931.271832
+Iteration:   356    Scaled infeas =         24023.579699
+Iteration:   441    Scaled infeas =          7075.554729
+Iteration:   518    Scaled infeas =          3821.836723
+Iteration:   598    Scaled infeas =          1605.756101
+Iteration:   678    Scaled infeas =           885.288454
+Iteration:   758    Scaled infeas =           456.698761
+Iteration:   838    Scaled infeas =            91.190554
+Iteration:   915    Scaled infeas =             2.029263
+Iteration:   998    Scaled infeas =             1.264935
+Iteration:  1083    Scaled infeas =             0.971128
+Iteration:  1159    Scaled infeas =             0.433528
+Iteration:  1236    Scaled infeas =             0.045982
+Iteration:  1256    Objective     =             0.000000
+
+Dual simplex solved model.
+
+
+Log for 'CPLEX' Clone_2 (V12.10.0.0) Wed Aug 16 12:13:49 2023
+
+Tried aggregator 1 time.
+LP Presolve eliminated 2423 rows and 103 columns.
+Aggregator did 1369 substitutions.
+Reduced LP has 5518 rows, 5684 columns, and 19116 nonzeros.
+Presolve time = 0.02 sec. (9.92 ticks)
+Symmetry aggregator did 3303 additional substitutions.
+
+Iteration log . . .
+Iteration:     1    Scaled infeas =  172476569669.553986
+Iteration:   119    Scaled infeas =   38756983948.805344
+Iteration:   331    Scaled infeas =   12856662632.700161
+Iteration:   474    Scaled infeas =    8334896591.464354
+Iteration:   620    Scaled infeas =    6625031866.451493
+Iteration:   758    Scaled infeas =    4985333365.743345
+Iteration:   920    Scaled infeas =    3886387001.368253
+Iteration:  1071    Scaled infeas =    3416221850.083943
+Iteration:  1225    Scaled infeas =    3015790288.742522
+Iteration:  1363    Scaled infeas =    2574218855.370525
+Iteration:  1496    Scaled infeas =    2429588061.391060
+Iteration:  1631    Scaled infeas =    2059791016.999666
+Iteration:  1775    Scaled infeas =    1555103412.967652
+Iteration:  1918    Scaled infeas =    1131245332.191739
+Iteration:  2076    Scaled infeas =     714594945.861296
+Iteration:  2231    Scaled infeas =     499233208.625164
+Iteration:  2369    Scaled infeas =     340367907.251304
+Iteration:  2528    Scaled infeas =     190242460.795573
+Iteration:  2683    Scaled infeas =      83442475.687736
+Iteration:  2847    Scaled infeas =      26333481.345326
+Iteration:  2999    Scaled infeas =       3066383.318842
+Iteration:  3158    Scaled infeas =        521514.899127
+Iteration:  3347    Scaled infeas =         64100.144466
+Iteration:  3499    Scaled infeas =         50324.223873
+Switched to devex.
+Iteration:  3652    Scaled infeas =         32881.753406
+Iteration:  3797    Scaled infeas =         15497.129687
+Iteration:  3938    Scaled infeas =             0.059882
+Iteration:  3943    Objective     =   76898766486.652863
+Iteration:  4130    Objective     =   62004085950.579247
+Iteration:  4180    Objective     =   51639484234.149002
+Iteration:  4330    Objective     =   46114703387.517532
+Iteration:  4479    Objective     =   42772509567.560951
+Iteration:  4637    Objective     =   38470316090.102798
+Iteration:  4796    Objective     =   35342333300.564270
+Iteration:  4923    Objective     =   31199987546.987328
+Iteration:  5070    Objective     =   27860392492.584957
+Iteration:  5215    Objective     =   26257627661.941650
+Iteration:  5382    Objective     =   23403394842.761589
+Iteration:  5542    Objective     =   21681511118.584949
+Iteration:  5689    Objective     =   19708964109.723152
+Iteration:  5829    Objective     =   18084213480.258282
+Removing shift (124).
+
+Barrier solved model.
+

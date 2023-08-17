@@ -1,10 +1,9 @@
 %% Pathway analysis
-if ~exist(sampleModelsMatrix)
-    sampleModelsMatrix(i,1)=ismember(ConsistentModel.rxns, model1)
-    sampleModelsMatrix(i,2)=ismember(ConsistentModel.rxns, model2)% adapt here in function of the number of your models
-else
-    load ('Reconstruction','sampleModelsMatrix','colnames')
-end
+clear
+load ('Reconstruction','sampleModelsMatrix','colnames','ConsistentModel','MatrixConsensus')
+altcolor= [255 255 255;255 204 204; 255 153 153; 255 102 102; 255 51 51;...
+    255 0 0; 204 0 0; 152 0 0; 102 0 0;  51 0 0]/255; %shorter 10% = 1 bar
+
 
 Pathways = table(unique(ConsistentModel.subSystems));
 [pathways, ~, ub] = unique(ConsistentModel.subSystems);
@@ -14,13 +13,13 @@ T = table(pathways, path_counts);
 Pathways.consistent(ia) = T.path_counts(ib);
 %% Pathway information for the consensus models
 
-[pathways, ~, ub] = unique(ConsistentModel.subSystems(find(sampleModelsMatrixConsensus(:,1))));
+[pathways, ~, ub] = unique(ConsistentModel.subSystems(find(MatrixConsensus(:,1))));
 path_counts = histc(ub, 1:length(pathways));
 T = table(pathways, path_counts);
 [~, ia, ib] = intersect(Pathways.Var1, T.pathways);
 Pathways.Var2(ia) = T.path_counts(ib) ;
 Pathways.Properties.VariableNames{3} = 'cancer_consensus';
-[pathways, ~, ub] = unique(ConsistentModel.subSystems(find(sampleModelsMatrixConsensus(:,2))));
+[pathways, ~, ub] = unique(ConsistentModel.subSystems(find(MatrixConsensus(:,2))));
 path_counts = histc(ub, 1:length(pathways));
 T = table(pathways, path_counts);
 [~, ia, ib] = intersect(Pathways.Var1, T.pathways);
@@ -74,3 +73,4 @@ cgo = clustergram(table2array(PathwayActivity(I(1:20),3:end)),...
 addTitle(cgo,'Pathway activity for all models');
 h = plot(cgo); set(h,'TickLabelInterpreter','none');
 colorbar(h)
+save Pathway
