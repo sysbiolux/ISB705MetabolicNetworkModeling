@@ -1,6 +1,6 @@
 # Self-study material for course "Metabolic Network modelling"
 
-Project-based learning course on metabolic network modelling in computational systems biology
+### Project-based learning course on metabolic network modelling in computational systems biology
 
 Thomas Sauter, Tamara Bintener, Ali Kishk, Luana Presta, Tessy Prohaska, Daniel Guignard, Ni Zeng, Claudia Cipriani, Sundas Arshad, Thomas Pfau, Patricia Martins Conde, Maria Pires Pacheco
 
