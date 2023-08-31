@@ -1,5 +1,8 @@
 # Book
+
 Modelling concept and simple examples:
-See Chapter 2 in
+
+See Chapter 2 in:
 Sauter & Albrecht, Introduction to Systems Biology, Workbook for Flipped-classroom Teaching (free download):
+
 https://www.openbookpublishers.com/books/10.11647/obp.0291
