@@ -1,4 +1,4 @@
-# Self-study material for week 1 of course "Metabolic Network modelling"
+# Self-study material for course "Metabolic Network modelling"
 
 Project-based learning course on metabolic network modelling in computational systems biology
 
