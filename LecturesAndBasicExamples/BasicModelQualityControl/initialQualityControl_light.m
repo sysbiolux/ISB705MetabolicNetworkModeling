@@ -5,7 +5,7 @@ clc
 model=readCbModel('..\..\Model\Blautia_hydrogenotrophica_DSM_10507.xml')
 
 %% annotation & stats
-% Are the folloing fields existing and correct?
+% Are the following fields existing and correct?
 model.mets(1:10)
 model.rxns(1:10)
 model.genes(1:10)
@@ -54,7 +54,7 @@ numel(A)/numel(model.rxns)
 blocked=setdiff(1:numel(model.rxns),A);
 numel(blocked)
 
-%% growth rate
+%% Maximal growth rate
 sol=optimizeCbModel(model,'max','zero') %minimal solution
 
 % Minimal mode for enabling growth and respective number of reactions per subsystem
@@ -64,5 +64,5 @@ temp=subSystems(find(sol.v~=0));
 counts = accumarray( idc, ones(size(idc)) ) ;
 table(uc',counts) %involved subSystems
 
-% Minimal medium for enabling growt
+% Minimal medium for enabling growth
 intersect(model.rxns(find(sol.v<0)),model.rxns(findExcRxns(model)))
