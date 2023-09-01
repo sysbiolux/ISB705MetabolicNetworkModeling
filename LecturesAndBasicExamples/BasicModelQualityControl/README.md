@@ -19,4 +19,4 @@ Furthermore:
 - reports minimal bound_span (ub-lb) to identify narrow bounded reactions
 - reports number of optimized reactions
 - reports minimal mode for enabling growth and respective number of reactions per subsystem
-- reports resective minimal medium for enabling growth
+- reports respective minimal medium for enabling growth
