@@ -8,4 +8,4 @@ And filtering for datasets with RNA-Seq counts using: "rnaseq counts"[Filter]
 
 E.g. caco-2 cell line "rnaseq counts"[Filter]
 
-Leading to: https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE224034
+Leading e.g. to: https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE224034
