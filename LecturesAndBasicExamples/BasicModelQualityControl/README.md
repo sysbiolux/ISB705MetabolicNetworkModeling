@@ -1,3 +1,19 @@
+### Initial Quality Control (light version)
+(called via initialQualityControl_light.m)
+
+Performing the following checks:
+- for fields that have to be present
+- Number of metabolites, reactions and genes
+- Number of subsystems & Number of reactions per subsystem
+- Values of lower and upper bounds
+- Reactions in objective function
+- flux consistency
+- Number and ratio of consistent reactions
+- Number of blocked/closed reactions
+- Maximal growth rate
+- Minimal mode for enabling growth and respective number of reactions per subsystem
+- Minimal medium for enabling growth
+
 ### Initial Quality Control
 (called via callQualityControl.m; needs fastbox toolbox)
 
