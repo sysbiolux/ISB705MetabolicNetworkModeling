@@ -10,7 +10,7 @@ https://www.openbookpublishers.com/books/10.11647/obp.0291
 especially examples 7, 11, 13
 
 # Lectures
-(download via course moodle page - uni.lu students only)
+(download via moodle course page - uni.lu students only)
 
 - Introduction to the COBRA toolbox
 - Large scale modelling & omics data integration with fastcore
