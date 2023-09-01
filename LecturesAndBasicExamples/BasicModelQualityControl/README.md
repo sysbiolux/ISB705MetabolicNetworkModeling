@@ -1,5 +1,5 @@
 ### Initial Quality Control
-(called via callQualityControl.m & needs fastbox toolbox)
+(called via callQualityControl.m; needs fastbox toolbox)
 is performing the following checks:
 - for fields that have to be present
 - if identifiers are unique
