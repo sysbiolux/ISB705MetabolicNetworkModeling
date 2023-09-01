@@ -1,6 +1,7 @@
 ### Initial Quality Control
 (called via callQualityControl.m; needs fastbox toolbox)
-is performing the following checks:
+
+Performing the following checks:
 - for fields that have to be present
 - if identifiers are unique
 - for empty rows in the S matrix
