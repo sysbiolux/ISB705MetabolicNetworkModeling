@@ -10,6 +10,7 @@ is performing the following checks:
 - for dead-ends
 - if subsystem are given
 - if reactions are assigned to multiple subsystems
+
 Furthermore:
 - reports flux consistency and blocked/closed reactions
 - simplify reversibility
