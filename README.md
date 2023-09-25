@@ -30,4 +30,4 @@ For course concept and schedule see: https://journals.plos.org/ploscompbiol/arti
 
 5. **Further Analysis**: Explore advanced topics and additional resources to deepen your understanding.
 
-    Directory: `LecturesAndBasicExamples/FurtherAnalysis`
+    Directory: `Analysis` & `DataProcessing`
