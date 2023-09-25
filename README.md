@@ -14,11 +14,11 @@ For course concept and schedule see: https://journals.plos.org/ploscompbiol/arti
 
 1. **Setting Up**: Start by setting up the necessary environment and tools.
 
-2. **First Approach with 'Introduction to Systems Biology' Book**: Begin with the first approach based on the content from the book 'Introduction to Systems Biology'.
+2. **First Approach with 'Introduction to Systems Biology' Book**: First approach based on the book 'Introduction to Systems Biology'.
 
     Directory: `LecturesAndBasicExamples/BasicExample`
 
-3. **Introduction to the COBRA Toolbox**: Explore lectures and exercises introducing the COBRA Toolbox for computational biology.
+3. **Introduction to the COBRA Toolbox**: Lectures and exercises introducing the COBRA Toolbox for computational biology.
 
     - Lectures Directory: `LecturesAndBasicExamples/Cobra_Introduction/Lectures`
     - Exercises Directory: `LecturesAndBasicExamples/Cobra_Introduction/Exercises`
