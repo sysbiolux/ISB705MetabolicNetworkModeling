@@ -38,9 +38,10 @@ if isfield(model,'subSystems')
                     end
                 end
             catch
+                disp('<strong>Warning reactions are assigned to multiple pathways.</strong>')
                 
                 for i=1:numel(model.subSystems)
-                    disp('Warning reactions are assigned to multiple pathways')
+                    %                     disp('Warning reactions are assigned to multiple pathways')
                     tmp=model.subSystems{i};
                     if ischar(tmp)
                         tmp=cellstr(tmp);
