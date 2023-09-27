@@ -16,7 +16,7 @@ For course concept and schedule see: https://journals.plos.org/ploscompbiol/arti
 
     Directory: `SettingUp`
 
-3. **First Approach with 'Introduction to Systems Biology' Book**: First approach based on the book 'Introduction to Systems Biology'.
+3. **Basic Examples and Concepts**: First approach based on the book 'Introduction to Systems Biology'.
 
     Directory: `LecturesAndBasicExamples/BasicExample`
 
@@ -25,7 +25,7 @@ For course concept and schedule see: https://journals.plos.org/ploscompbiol/arti
     - Lectures Directory: `LecturesAndBasicExamples/Cobra_Introduction/Lectures`
     - Exercises Directory: `LecturesAndBasicExamples/Cobra_Introduction/Exercises`
 
-5. **Metabolic Modelling & Introduction to the FASTCORMICS Module**: Lectures and exercises covering metabolic modeling and an introduction to the FASTCORMICS module.
+5. **Metabolic Modelling & Introduction to the FASTCORMICS Pipeline**: Lectures and exercises covering metabolic modeling and an introduction to the FASTCORMICS pipeline.
 
     - Lectures Directory: `LecturesAndBasicExamples/MetabolicModelling_Fastcormics/Lectures`
     - Exercises Directory: `LecturesAndBasicExamples/MetabolicModelling_Fastcormics/Exercises`
