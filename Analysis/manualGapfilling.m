@@ -1,6 +1,6 @@
 clear 
 rxns_to_link='Lutein';
-%In this script we want to enhable the model to produce Luteine and S_epsilon_Carotene
+%In this script we want to enable the model to produce Luteine and S_epsilon_Carotene
 % two demand reaction were added : epsilon carotene harvesting Luteinharvesting
 epsilon=1e-4;
 %set the path
