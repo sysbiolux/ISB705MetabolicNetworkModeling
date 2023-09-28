@@ -17,7 +17,7 @@ https://github.com/sysbiolux/IDARE-QuickStart
 
 
 
-### For small networks and pathways: Escher
+### Escher (for small networks and pathways)
 https://journals.plos.org/ploscompbiol/article?id=10.1371/journal.pcbi.1004321
 
 https://escher.readthedocs.io/en/latest/
