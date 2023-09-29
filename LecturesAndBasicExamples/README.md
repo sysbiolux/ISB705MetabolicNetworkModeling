@@ -1,10 +1,3 @@
-# Lectures
-(download via moodle course page - uni.lu students only)
-
-- Introduction to the COBRA toolbox
-- Large scale modelling & omics data integration with fastcore
-- Keynote: Contextualization of Molecular Network Models and their Application to Cancer Biology
-
 # Lectures and Examples 
 
 ## 1. Modelling Concept and Simple Examples
@@ -22,6 +15,12 @@ Lectures and exercises covering metabolic modeling and an introduction to the FA
 
 Have a look at the courses slides in the `Lectures` folder and the corresponding example script, then do the exercice (`ISB705_2022_Metabolic_modelling_days.mlx`).
 
-3. Keynote: Contextualization of Molecular Network Models and Their Application to Cancer Biology
+## 4. Quality Control 
 
-For detailed lectures on the aforementioned topics, please download the material via the moodle course page. Note that this is accessible to University of Luxembourg students only.
+Correspond to a set of scripts used to perform data quality control (for more informations, see the Readme of the `BasicModelQualityControl` folder).
+
+## 5. Bibliography
+
+- Introduction to the COBRA toolbox
+- Large scale modelling & omics data integration with fastcore
+- Keynote: Contextualization of Molecular Network Models and their Application to Cancer Biology
