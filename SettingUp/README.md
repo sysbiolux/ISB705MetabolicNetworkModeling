@@ -1,2 +1,4 @@
-### Add toolboxes and cplex solver initialization to your matlab startup:
-startup.m
+# Setting Up 
+
+### Add Toolboxes and Cplex solver initialization to your matlab startup:
+* ```startup.m```
