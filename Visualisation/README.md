@@ -23,6 +23,11 @@ Examples:
 
 Layout: "Prefuse Force Directed layouot" with Default Spring Length = 20 and Default Node Mass = 1 (Settings) gives aften nice results. But feel free to explore other settings and layouts.
 
+Data import (fluxes) to Recon3D:
+- addfluxes2.m: generates table with reaction name (shared name) and data
+- import to cytoscape via: File -> Import -> Table from File -> (Select file name). Then: Where to Import Table Data:To a Network Collection; Import Data as: Node Table Columns; Key Column For Network: shared name. Advanced Options: Delimiter: comma. OK.
+- map flux data e.g. via Style -> Size -> (select data column) -> Continuous Mapping. Double-click on Mapping -> Add (to add additional base point) -> Node Size = 30 (for high & low flux values) & = 5 (for 0 flux values)
+
 ### Escher (for small networks and pathways)
 https://journals.plos.org/ploscompbiol/article?id=10.1371/journal.pcbi.1004321
 
