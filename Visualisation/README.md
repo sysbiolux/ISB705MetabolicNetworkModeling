@@ -18,6 +18,7 @@ We recommend to start here:
 https://github.com/sysbiolux/IDARE-QuickStart
 
 Examples:
+- Recon3D (Recon3D_cyto_split_v2)
 - Blautia hydrogenotropica
 
 Layout: "Prefuse Force Directed layouot" with Default Spring Length = 20 and Default Node Mass = 1 (Settings) gives aften nice results. But feel free to explore other settings and layouts.
