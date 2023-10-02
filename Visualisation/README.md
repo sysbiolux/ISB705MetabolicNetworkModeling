@@ -17,6 +17,8 @@ We recommend to start here:
 
 https://github.com/sysbiolux/IDARE-QuickStart
 
+Examples:
+- Blautia hydrogenotropica
 
 
 ### Escher (for small networks and pathways)
