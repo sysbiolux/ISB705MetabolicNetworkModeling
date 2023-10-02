@@ -41,7 +41,7 @@ uniqueconditions=unique(conditions);
 %% 3.2. Context-specific model reconstruction
 % human reconstruction Recon 3
 
-load('Recon3Model.mat')
+load('Recon3DModel.mat')
 %% load medium - dictionnaries -
 
 load mediumExample.mat
@@ -79,7 +79,8 @@ if sum(ismember(name,'consensus'))
 
     for i=1:numel(uniqueconditions)
         match=ismember(conditions,uniqueconditions(i));
-        [index]=rFastcormics4cobra(model, fpkm(:,match), rownames, colnames(match),dico, consensusProportion, epsilon, optionalSettings, biomassReactionName, printFigures, path);
+       index=fastcormics_RNAseq(model, fpkm(:,match), rownames, dico, biomassReactionName, 0, consensusProportion, epsilon, optionalSettings)
+
         MatrixConsensus(index,i)=1;
         MatrixConsensus(index,i)=1;
     end
@@ -95,7 +96,7 @@ end
 if sum(ismember(name,'sample'))
     sampleModelsMatrix =zeros(numel(model.rxns), numel(colnames));
     for i = 1:numel(colnames) %for each sample
-        [ sample_models] = rFastcormics4cobra(model, fpkm(:,i), rownames, colnames(i),dico, consensusProportion, epsilon, optionalSettings, biomassReactionName, printFigures);
+            [ sample_models] = fastcormics_RNAseq(model, fpkm(:,i), rownames, dico, biomassReactionName, 0, consensusProportion, epsilon, optionalSettings);
         sampleModelsMatrix(sample_models,i)=1;
     end
     ModelMatrix.sample=sampleModelsMatrix;
