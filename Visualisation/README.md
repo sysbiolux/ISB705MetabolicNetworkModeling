@@ -20,6 +20,7 @@ https://github.com/sysbiolux/IDARE-QuickStart
 Examples:
 - Blautia hydrogenotropica
 
+Layout: "Prefuse Force Directed layouot" with Default Spring Length = 20 and Default Node Mass = 1 (Settings) gives aften nice results. But feel free to explore other settings and layouts.
 
 ### Escher (for small networks and pathways)
 https://journals.plos.org/ploscompbiol/article?id=10.1371/journal.pcbi.1004321
