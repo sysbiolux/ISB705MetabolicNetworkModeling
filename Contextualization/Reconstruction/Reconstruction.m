@@ -79,7 +79,7 @@ if sum(ismember(name,'consensus'))
 
     for i=1:numel(uniqueconditions)
         match=ismember(conditions,uniqueconditions(i));
-       index=fastcormics_RNAseq(model, fpkm(:,match), rownames, dico, biomassReactionName, 0, consensusProportion, epsilon, optionalSettings)
+       [~,index] =fastcormics_RNAseq(model, fpkm(:,match), rownames, dico, biomassReactionName, 0, consensusProportion, epsilon, optionalSettings)
 
         MatrixConsensus(index,i)=1;
         MatrixConsensus(index,i)=1;
@@ -96,7 +96,7 @@ end
 if sum(ismember(name,'sample'))
     sampleModelsMatrix =zeros(numel(model.rxns), numel(colnames));
     for i = 1:numel(colnames) %for each sample
-            [ sample_models] = fastcormics_RNAseq(model, fpkm(:,i), rownames, dico, biomassReactionName, 0, consensusProportion, epsilon, optionalSettings);
+            [~, sample_models] = fastcormics_RNAseq(model, fpkm(:,i), rownames, dico, biomassReactionName, 0, consensusProportion, epsilon, optionalSettings);
         sampleModelsMatrix(sample_models,i)=1;
     end
     ModelMatrix.sample=sampleModelsMatrix;
