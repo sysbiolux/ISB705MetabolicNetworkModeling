@@ -1,5 +1,11 @@
 # Analysis 
 
+* ### JaccardSimilarity.m
+
+Allows to calcul the similarity calculated using Jaccard's similarity coefficient between models and shows this in the form of a heatmap. 
+
+The color indicates how similar the models are (dark red: identical, white: no similarity).
+
 * ### exampleFVAsimilarity.m
 
 The code is used to calculate the similarity between 2 FVA calculated on the same model for different conditions (e.g. healthy vs pathological, test vs reference treatment). 
