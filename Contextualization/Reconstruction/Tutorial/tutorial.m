@@ -414,43 +414,21 @@ epsilon = 1e-4;
 % ---- enter your code here, then run the Answer section to enter the answer ----
 feature astheightlimit 2000
 biomass_rxn='biomass_reaction';
-[~, A_final] = fastcormics_RNAseq(model, discretized, rownames, dico, biomass_rxn, already_mapped_tag, consensus_proportion, epsilon, optional_settings);
+[BRCA_generic_model, A_final] = fastcormics_RNAseq(model, discretized, rownames, dico, biomass_rxn, already_mapped_tag, consensus_proportion, epsilon, optional_settings);
 numel(A_final)
 %% 
 % *Answer*
 
 %Ques(20)
 %% 
-% *Create a model from A_final*
 % 
 % Each tissue has a different expression pattern which is taken into account 
 % by FASTCORMICS. In fact, compared to other model building algorithms, the FASTCORE 
 % family has a high accuracy, specificity and is very robust. You can read more 
 % on the performance of different algorithms here: <https://www.frontiersin.org/articles/10.3389/fphys.2015.00410/full 
 % https://www.frontiersin.org/articles/10.3389/fphys.2015.00410/full> 
-% 
-% To create a model from the A_final array, we will create a logical matrix 
-% with the samples as column and the reactions as row in which 1 depicts if a 
-% reaction should take place in the context-specific model. We will call this 
-% matrix: models_keep
-% 
-% First, we create an array of all zeros
 
-models_keep = zeros(numel(consistent_model.rxns), 1); %all 0 array, with same size as reactions in the model
-%% 
-% using the indices in A_final, we will set to 1 those reactions that take place
 
-models_keep(A_final,1) = 1;
-%% 
-% based on this array, we can create the models, by removing the unnecessary 
-% reactions from the consistent model
-
-BRCA_generic_model = removeRxns(consistent_model,consistent_model.rxns(setdiff(1:numel(consistent_model.rxns),find(models_keep(:,1)))));
-%% 
-% Note: the model is also a direct output from FASTCORMICS, however, if you 
-% create many models it is better to suppress this output as it will only take 
-% up memory and slow down your computer. Saving the model reaction in a matrix 
-% is sufficient.
 %% Model optimization
 %% Question 21
 % Often, an objective function is already set in the model. By default, it is 
