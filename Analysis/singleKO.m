@@ -4,43 +4,54 @@ load ('Reconstruction','ModelMatrix')
 changeCobraSolver('ibm_cplex')
 
 if consensusModel==1  && sampleModel==1
-    name ={'consensus', 'sample'};
+    annotation ={'consensus', 'sample'};
 elseif  consensusModel==1  && sampleModel==0
-    name ={'consensus'};
+    annotation ={'consensus'};
 elseif  consensusModel==0 && sampleModel==1
-    name ={'sample'};
+    annotation ={'sample'};
 end
-ConsistentModel=ModelMatrix.consistentModel;
 
-
-if sum(ismember(name,'consensus'))
+if sum(ismember(annotation,'consensus'))
     if ~exist('ModelMatrix','var')
         sampleModelsMatrix(:,1)=ismember(ConsistentModel.rxns, model1);
         sampleModelsMatrix(:,2)=ismember(ConsistentModel.rxns, model2);% adapt here in function of the number of your models
         condition={'condition1', 'condition2'};
     end
 end
-ConsistentModel=ModelMatrix.consistentModel;
 
 objectives={'DM_atp_c_', 'biomass_reaction'};
 SingleKOResults=struct();
-for counter2=1:numel(name)
+for counter2=1:numel(annotation)
 
-    if  sum(ismember(name(counter2),'consensus'))
-        models_keep=ModelMatrix.consensus;
+    if  sum(ismember(annotation(counter2),'consensus'))
+        load Reconstruction uniqueconditions
+        col=uniqueconditions;
+        name=strcat('ConsensusModel_',uniqueconditions{counter2});
+        load (name, 'ContextModel');
+        if ischar(name)
+            name=cellstr(name)
+        end
+        
     else
-        models_keep=ModelMatrix.sample;
+         load Reconstruction colnames
+
+        name=strcat('SampleModel_',colnames{counter2});
+        load (name, 'ContextModel');
+        col=colnames;
+        if ischar(name)
+            name=cellstr(annotation)
+        end
+        
     end
-    for i=1:size(models_keep,2) %for each model
+    for i=1:numel(col) %for each model
 
         for counter=1:numel(objectives)
 
-            ind = find(~cellfun(@isempty, regexp(ConsistentModel.rxns, objectives (counter) )));
-            model_out = removeRxns(ConsistentModel,ConsistentModel.rxns(setdiff(1:numel(ConsistentModel.rxns),find(models_keep(:,i))))); % create model based on active reactions
-            if sum(ismember(model_out.rxns,objectives(counter)))
-                model_out = changeObjective(model_out,ConsistentModel.rxns(ind));
 
-                [grRatio, grRateKO, grRateWT, hasEffect, delRxns, fluxSolution] = singleGeneDeletion_rFASTCORMICS(model_out,'FBA',[],0,1);
+            if sum(ismember(ContextModel.rxns,objectives(counter)))
+                 ContextModel.c=zeros(numel(ContextModel.rxns),1);
+                ContextModel.c(ismember(ContextModel.rxns,objectives(counter)))=1;
+                [grRatio, grRateKO, grRateWT, hasEffect, delRxns, fluxSolution, geneList] = singleGeneDeletion_rFASTCORMICS(ContextModel,'FBA',[],0,1);
 
                 SingleKOResults(i).(name{counter2}). (objectives{counter}).gratio=grRatio;
                 SingleKOResults(i).(name{counter2}). (objectives{counter}).grRateKO=grRateKO;

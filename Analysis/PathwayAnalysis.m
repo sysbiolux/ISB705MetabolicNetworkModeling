@@ -1,10 +1,12 @@
 %% Pathway analysis
 clear
-load ('Reconstruction','sampleModelsMatrix','colnames','ConsistentModel','MatrixConsensus')
+load ('Reconstruction','SampleMatrix','colnames','ConsistentModel','ConsensusMatrix')
 altcolor= [255 255 255;255 204 204; 255 153 153; 255 102 102; 255 51 51;...
     255 0 0; 204 0 0; 152 0 0; 102 0 0;  51 0 0]/255; %shorter 10% = 1 bar
 
-
+if iscell(ConsistentModel.subSystems{1})
+    ConsistentModel.subSystems=vertcat(ConsistentModel.subSystems{:})
+end
 Pathways = table(unique(ConsistentModel.subSystems));
 [pathways, ~, ub] = unique(ConsistentModel.subSystems);
 path_counts = histc(ub, 1:length(pathways));
@@ -13,13 +15,13 @@ T = table(pathways, path_counts);
 Pathways.consistent(ia) = T.path_counts(ib);
 %% Pathway information for the consensus models
 
-[pathways, ~, ub] = unique(ConsistentModel.subSystems(find(MatrixConsensus(:,1))));
+[pathways, ~, ub] = unique(ConsistentModel.subSystems(find(ConsensusMatrix(:,1))));
 path_counts = histc(ub, 1:length(pathways));
 T = table(pathways, path_counts);
 [~, ia, ib] = intersect(Pathways.Var1, T.pathways);
 Pathways.Var2(ia) = T.path_counts(ib) ;
 Pathways.Properties.VariableNames{3} = 'cancer_consensus';
-[pathways, ~, ub] = unique(ConsistentModel.subSystems(find(MatrixConsensus(:,2))));
+[pathways, ~, ub] = unique(ConsistentModel.subSystems(find(ConsensusMatrix(:,2))));
 path_counts = histc(ub, 1:length(pathways));
 T = table(pathways, path_counts);
 [~, ia, ib] = intersect(Pathways.Var1, T.pathways);
@@ -28,7 +30,7 @@ Pathways.Properties.VariableNames{4} = 'control_consensus';
 %% pathway information for the sample-specific models
 
 for i=1:numel(colnames)
-    [pathways, ~, ub] = unique(ConsistentModel.subSystems(find(sampleModelsMatrix(:,i))));
+    [pathways, ~, ub] = unique(ConsistentModel.subSystems(find(SampleMatrix(:,i))));
     path_counts = histc(ub, 1:length(pathways));
     T = table(pathways, path_counts);
     [~, ia, ib] = intersect(Pathways.Var1, T.pathways);

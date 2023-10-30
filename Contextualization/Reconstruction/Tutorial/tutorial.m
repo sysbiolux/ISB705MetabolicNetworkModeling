@@ -414,7 +414,7 @@ epsilon = 1e-4;
 % ---- enter your code here, then run the Answer section to enter the answer ----
 feature astheightlimit 2000
 biomass_rxn='biomass_reaction';
-[BRCA_generic_model, A_final] = fastcormics_RNAseq(model, discretized, rownames, dico, biomass_rxn, already_mapped_tag, consensus_proportion, epsilon, optional_settings);
+[BRCA_generic_model, ~] = fastcormics_RNAseq(model, discretized, rownames, dico, biomass_rxn, already_mapped_tag, consensus_proportion, epsilon, optional_settings);
 numel(A_final)
 %% 
 % *Answer*

@@ -43,7 +43,8 @@ uniqueconditions=unique(conditions);
 
 load('Recon3DModel.mat')
 %% load medium - dictionnaries -
-
+A=fastcc_4_rfastcormics(model,1e-4,0);
+ConsistentModel=removeRxns(model,model.rxns(setdiff(1:numel(model.rxns),A)));
 load mediumExample.mat
 load dicorFASTCORMICS.mat
 
@@ -65,7 +66,8 @@ unpenalizedSystems = {'Transport, endoplasmic reticular';
 unpenalized = model.rxns(ismember(model.subSystems,unpenalizedSystems));
 optionalSettings.unpenalized = unpenalized;
 optionalSettings.func = {'DM_atp_c_','biomass_reaction'}; % forced reactions
-notMediumConstrained = 'EX_tag_hs(e)';% if no constrain is used please remove the field.
+notMediumConstrained = {'EX_hdl_hs[e]';'EX_tag_hs[e]'}
+% if no constrain is used please remove the field.
 optionalSettings.notMediumConstrained = notMediumConstrained;
 optionalSettings.medium = medium_example;% if no medium is used please remove the field.
 
@@ -75,34 +77,51 @@ changeCobraSolver('ibm_cplex');
 
 %% Reconstruct the context-specific models
 if sum(ismember(name,'consensus'))
-    MatrixConsensus =zeros(numel(model.rxns), numel(uniqueconditions));
-
+    ConsensusModel=struct();
+    % !!! Only use the index if you are looking at the structure otherwise the
+    % constraint will be removed
+    ConsensusMatrix=zeros(numel(model.rxns),numel(uniqueconditions));
+    
+    
     for i=1:numel(uniqueconditions)
         match=ismember(conditions,uniqueconditions(i));
-       [~,index] =fastcormics_RNAseq(model, fpkm(:,match), rownames, dico, biomassReactionName, 0, consensusProportion, epsilon, optionalSettings)
-
-        MatrixConsensus(index,i)=1;
-        MatrixConsensus(index,i)=1;
+        
+        [ContextModel,index] =fastcormics_RNAseq(ConsistentModel, fpkm(:,match), rownames, dico, biomassReactionName, 0, consensusProportion, epsilon, optionalSettings);
+        name=strcat('ConsensusModel_',uniqueconditions{i});
+        save (name, 'ContextModel');
+        ConsensusMatrix(index,i)=1; % Only use this matrix for structure analysis
     end
-    ModelMatrix.consensus=MatrixConsensus;
-    ModelMatrix.conditions=uniqueconditions;
-
+    
+    
 end
-ModelMatrix.consistentModel=model;
-if sum(MatrixConsensus(ismember(model.rxns, 'biomass_reaction'),:)==0)>1
-xxx
+for counter=1:numel(uniqueconditions)
+    name=strcat('ConsensusModel_',uniqueconditions{i});
+    load (name, 'ContextModel');
+    if isempty(ismember(ContextModel.rxns, 'biomass_reaction'))
+        xxx
+    end
 end
 %% sample-specific models
 if sum(ismember(name,'sample'))
-    sampleModelsMatrix =zeros(numel(model.rxns), numel(colnames));
+    SampleModel=struct();
+    SampleMatrix=zeros(numel(model.rxns),numel(colnames));
     for i = 1:numel(colnames) %for each sample
-            [~, sample_models] = fastcormics_RNAseq(model, fpkm(:,i), rownames, dico, biomassReactionName, 0, consensusProportion, epsilon, optionalSettings);
-        sampleModelsMatrix(sample_models,i)=1;
+        % Only use the index if you are looking at the structure otherwise the
+        % constraint will be removed
+        
+        [ContextModel, index] = fastcormics_RNAseq(ConsistentModel, fpkm(:,i), rownames, dico, biomassReactionName, 0, consensusProportion, epsilon, optionalSettings);
+        name=strcat('SampleModel_',colnames{i});
+        save (name, 'ContextModel');
+        SampleMatrix(index,i)=1; % Only use this matrix for structure analysis
+        
     end
-    ModelMatrix.sample=sampleModelsMatrix;
-    ModelMatrix.colnames=colnames;
+    
 end
-if sum(sampleModelsMatrix(ismember(model.rxns, 'biomass_reaction'),:)==0)>1
-xxx
+for counter=1:numel(colnames)
+    name=strcat('SampleModel_',colnames{i});
+    load (name, 'ContextModel');
+    if isempty(ismember(ContextModel.rxns, 'biomass_reaction'))
+        xxx
+    end
 end
 save Reconstruction
