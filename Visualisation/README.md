@@ -22,18 +22,18 @@ Examples:
 - Blautia hydrogenotropica
 
 ##### Layout
-"Prefuse Force Directed layouot" with Default Spring Length = 20 and Default Node Mass = 1 (Settings) often gives nice results. But feel free to explore other settings and layouts.
+"Prefuse Force Directed layouot" with Default Spring Length = 20 and Default Node Mass = 1 (Settings) and "yFiles Organic Layout" often give nice results. But feel free to explore other settings and layouts.
 
 ##### Data import (fluxes) to Recon3D - Approch I
-- base Recon3D model: RECON3D_consistent_model.mat; RECON3D_consistent_model.xml; RECON3D_consistent_model.cys
+- Base Recon3D model: RECON3D_consistent_model.mat; RECON3D_consistent_model.xml; RECON3D_consistent_model.cys
 - RECON3D model with pre-defined size and shape mapping: RECON3D_061123.cys
 - metsFluxSum_v3FBA_061123.m: generates table (metsFluxSum_log2.txt) with metabolite/reaction name (sbml id), node size (based on flux sum per metabolite or absolute flux per reaction), shape and keep/remove flag
-- shape is "Elipse" for metabolites above cutoff and "none" for metabolites below cutoff
-- shape is "Triangle"/"V"/"none" for reactions with positive/negative/zero flux
-- "none" shapes get "remove" flag, others "keep"
+- Shape is "Elipse" for metabolites above cutoff and "none" for metabolites below cutoff.
+- Shape is "Triangle"/"V"/"none" for reactions with positive/negative/zero flux.
+- "none" shapes get "remove" flag, others "keep".
 - Cytoscape -> open RECON3D_061123.cys
-- import to cytoscape via: File -> Import -> Table from File -> (Select file name: metsFluxSum_log2.txt). Then: Where to Import Table Data:To a Network Collection; Import Data as: Node Table Columns; Key Column For Network: shared name. Advanced Options: Delimiter: comma. OK.
-- size and shape mapping should automatically update network (RECON3D_061123_dataMapped.cys)
+- Import to cytoscape via: File -> Import -> Table from File -> (Select file name: metsFluxSum_log2.txt). Then: Where to Import Table Data:To a Network Collection; Import Data as: Node Table Columns; Key Column For Network: shared name. Advanced Options: Delimiter: comma. OK.
+- Size and shape mapping should automatically update network (RECON3D_061123_dataMapped.cys)
 - Keep onnly active metabolites and reactions: Node table -> search "keep" -> invert node selection -> delete (RECON3D_061123_dataMapped_keepOnly.cys)
 - Remove cofactors: Select -> Nodes -> from ID List File -> (File name of above list: metsCofactors.txt) -> delete (RECON3D_061123_dataMapped_keepOnly_removeCo.cys)
 
