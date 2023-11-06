@@ -24,7 +24,7 @@ Examples:
 ##### Layout
 "Prefuse Force Directed layouot" with Default Spring Length = 20 and Default Node Mass = 1 (Settings) and "yFiles Organic Layout" often give nice results. But feel free to explore other settings and layouts.
 
-##### Data import (fluxes) to Recon3D - Approch I
+##### Data import (fluxes and flux sums) to Recon3D - Approch I
 - Base Recon3D model: RECON3D_consistent_model.mat; RECON3D_consistent_model.xml; RECON3D_consistent_model.cys
 - RECON3D model with pre-defined size and shape mapping: RECON3D_061123.cys
 - metsFluxSum_v3FBA_061123.m: generates table (metsFluxSum_log2.txt) with metabolite/reaction name (sbml id), node size (based on flux sum per metabolite or absolute flux per reaction), shape and keep/remove flag
