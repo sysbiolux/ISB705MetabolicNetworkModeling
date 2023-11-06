@@ -1,0 +1,72 @@
+Proton
+Water
+Orthophosphate
+Nicotinamide Adenine Dinucleotide
+Nicotinamide Adenine Dinucleotide - Reduced
+Adenosine Monophosphate
+Adenosine Diphosphate
+Adenosine Triphosphate
+Guanosine-5-Monophosphate
+Uridine-5-TrIphosphate
+Uridine-5'-TrIphosphate
+Uridine-5'-Triphosphate
+3-Uridine-5-Monophosphate
+2,3-Cyclic Uridine-5-Monophosphate
+Sodium
+Iodide
+Ammonium
+Hydrogen Peroxide
+Oxygen
+Diphosphate
+Nicotinamide Adenine Dinucleotide Phosphate
+Nicotinamide Adenine Dinucleotide Phosphate - Reduced
+Coenzyme A
+Carbon Dioxide
+Uridine Diphosphate
+Cytidine-5-DIphosphate
+Uridine-5-Monophosphate
+Deoxycytidine-5-Diphosphate
+Bicarbonate
+Chloride
+Guanosine-5-Diphosphate
+Guanosine-5-Diphosphate-L-Fucose
+Guanosine-5-Triphosphate
+Iinosine-5-Triphosphate
+Inosine-5-Diphosphate
+Inosine-5-Monophosphate
+Adenosine-5-Diphosphate-D-Ribose 2-Phosphate
+Adenosine-5-Diphosphate-Ribose
+Beta-D-Glucose-6-Phosphate
+Cytidine 5-Monophosphate
+Cytidine-5-Diphosphate-Ethanolamine
+Cytidine-5-Monophosphate-N-Acetyl-Beta-Neuraminate
+Cytidine-5-Triphosphate
+Deoxycytidine-5-Triphosphate
+Deoxyguanosine-5-Diphosphate
+Deoxyguanosine-5-Triphosphate
+Deoxyinosine-5-Diphosphate
+Deoxyinosine-5-Triphosphate
+Deoxythymidine-5-Diphosphate
+Deoxythymidine-5-Phosphate
+Deoxythymidine-5-Triphosphate
+Deoxyuridine-5-Diphosphate
+Deoxyuridine-5-Monophosphate
+Deoxyuridine-5-Triphosphate
+3-Phosphoadenylyl Sulfate
+Sulfite
+Sulfate
+Flavin Adenine Dinucleotide Reduced
+Flavin Adenine Dinucleotide Oxidized
+Adenosine 3,5-Bismonophosphate
+Iinosine-5'-Triphosphate
+Inosine-5'-Diphosphate
+Guanosine-5'-Triphosphate
+Guanosine-5'-Diphosphate
+Cytidine-5'-DIphosphate
+Cytidine-5'-Diphosphate
+Cytidine-5'-Triphosphate
+Deoxyguanosine-5'-Triphosphate
+Deoxyguanosine-5'-Diphosphate
+Deoxyadenosine Diphosphate
+Deoxyadenosine Triphosphate
+Uridine-5-Monophosphate
