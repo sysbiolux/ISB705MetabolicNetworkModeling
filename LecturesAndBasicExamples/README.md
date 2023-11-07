@@ -13,7 +13,7 @@ Read the courses slides in the `Lectures` folder, then do exercices 1 to 4 (`Pra
 ## 3. Metabolic Modelling & Introduction to the FASTCORMICS Pipeline: 
 Lectures and exercises covering metabolic modeling and an introduction to the FASTCORMICS pipeline.
 
-Have a look at the courses slides in the `Lectures` folder and the corresponding example script (`ISB705MetabolicNetworkModeling/Contextualization/Reconstruction/Tutorial/Fastcormics_example.mlx`), then do the exercice (`ISB705MetabolicNetworkModeling/Contextualization/Reconstruction/Tutorial/ISB705_2022_Metabolic_modelling_days.mlx`).
+Have a look at the courses slides in the `Lectures` folder and the corresponding example script (`Contextualization/Reconstruction/Tutorial/Fastcormics_example.mlx`), then do the exercice (`Contextualization/Reconstruction/Tutorial/ISB705_2022_Metabolic_modelling_days.mlx`).
 
 ## 4. Quality Control 
 
