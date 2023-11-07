@@ -25,11 +25,11 @@ For course concept and schedule see: https://journals.plos.org/ploscompbiol/arti
     - Lectures Directory: `LecturesAndBasicExamples/Cobra_Introduction/Lectures`
     - Exercises Directory: `LecturesAndBasicExamples/Cobra_Introduction/Exercises`
 
-5. **Metabolic Modelling & Introduction to the FASTCORMICS Pipeline**: Lectures and exercises covering metabolic modeling and an introduction to the FASTCORMICS pipeline.
+5. **Metabolic Modelling & Introduction to FASTCORMICS**: Lectures and exercises covering metabolic modeling and an introduction to FASTCORMICS.
 
     - Lectures Directory: `LecturesAndBasicExamples/MetabolicModelling_Fastcormics/Lectures`
     - Exercises Directory: `LecturesAndBasicExamples/MetabolicModelling_Fastcormics/Exercises`
 
 6. **Further Analysis**: Explore advanced topics and additional resources to deepen your understanding.
 
-    Directory: `Analysis` & `DataProcessing`
+    Directory: `Contextualization`, `Analysis`, `DataProcessing` & `Visualisation`
