@@ -28,7 +28,7 @@ For course concept and schedule see: https://journals.plos.org/ploscompbiol/arti
 5. **Metabolic Modelling & Introduction to FASTCORMICS**: Lectures and exercises covering metabolic modeling and an introduction to FASTCORMICS.
 
     - Lectures Directory: `LecturesAndBasicExamples/MetabolicModelling_Fastcormics/Lectures`
-    - Exercises Directory: `LecturesAndBasicExamples/MetabolicModelling_Fastcormics/Exercises`
+    - Exercises Directory: `Contextualization/Reconstruction/Tutorial`
 
 6. **Further Analysis**: Explore advanced topics and additional resources to deepen your understanding.
 
