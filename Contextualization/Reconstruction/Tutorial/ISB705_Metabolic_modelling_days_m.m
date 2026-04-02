@@ -26,6 +26,7 @@ mkdir('answers')
 addpath(genpath('answers'))
 addpath(genpath('data'))
 
+changeCobraSolver('gurobi');
 feature astheightlimit 2000
 %% 
 % this part is not mandatory to run, leave it commented
@@ -331,7 +332,7 @@ model.grRules(279) %is associated with two genes using a Boolean AND
 % Our model has the lower bound _lb_ field, so let us create the _rev_ field 
 % for FASTCC:
 
-A = fastcc_4_rfastcormics(model, 1e-4, 0)
+A = fastcc(model, 1e-4, 1)
 %% Question 11
 % A model in which all the reactions are connected directly or indirectly to 
 % the environment are called consistent. A reaction that can carry flux is called 
@@ -363,7 +364,7 @@ consistent_model = removeRxns(model, model.rxns(setdiff(1:numel(model.rxns),A)))
 % To check if the newly created model is consistent, we can run _fastcc_ again, 
 % it will tell us that the input model is consistent:
 
-fastcc_4_rfastcormics(consistent_model, 1e-4, 0);
+fastcc(consistent_model, 1e-4, 1);
 %% 
 % *Exchange reactions and medium constraints*
 % 
@@ -393,7 +394,7 @@ fastcc_4_rfastcormics(consistent_model, 1e-4, 0);
 % If you want to know what metabolites are used in the exchange reactions you 
 % can print the equations of the reactions by using the _printRxnFormula_ function:
 
-printRxnFormula(consistent_model, consistent_model.rxns(find(EX))); % shows ALL exchange reactions
+printRxnFormula(consistent_model, consistent_model.rxns(EX)); % shows ALL exchange reactions
 %% 
 % As you scroll through the equations, you see that there is only a metabolite 
 % on one side of the equation and nothing on the other. This means that the metabolite 
@@ -425,7 +426,8 @@ load medium_example.mat
 % Secondly, let us find the exchange reactions that are importing these metabolites 
 % from the cell into the model. These exchange reactions will be able to carry 
 % a flux. We can use the _findRxnsFromMets_ function to find the reactions associated 
-% with a list of metabolites. Alternatively, these rxns can be found directly from the S matrix : 
+% with a list of metabolites. Alternatively, these _rxns_ can be found directly 
+% from the S matrix : 
 
 % [Ex_open] = findRxnsFromMets(consistent_model, medium_example)
 [~, rxnid] = find(consistent_model.S(ismember(consistent_model.mets, medium_example),:));
@@ -456,7 +458,7 @@ medium_constrained_model.XX(ismember(consistent_model.rxns,Ex_to_close)) = 0
 % to carry a flux and the model might become inconsistent again. We should run 
 % FASTCC again on the medium constrained model:
 
-A = fastcc_4_rfastcormics(medium_constrained_model, 1e-4, 0); %takes approx. 15 minutes
+A = fastcc(medium_constrained_model, 1e-4, 1); %takes approx. 15 minutes
 %% Question 17
 % After getting the indices of the consistent reactions from the medium constrained 
 % model, build the new consistent and medium constrained model by removing the 
@@ -575,9 +577,9 @@ discretized = discretize_FPKM(fpkm, colnames);
 %% 
 % *Mapping the gene expression data to reactions*
 % 
-% For this tutorial, we will use rFASTCORMICS, a member of the FASTCORE family 
+% For this tutorial, we will use rFASTCORMICS_v2, a member of the FASTCORE family 
 % specifically designed to integrate RNAseq data into genome-scale metabolic reconstructions. 
-% But before using rFASTCORMICS we need to understand a key aspect of context-specific 
+% But before using rFASTCORMICS_v2 we need to understand a key aspect of context-specific 
 % model building: the mapping of the expression to the model reactions.
 % 
 % As we have seen before, the reactions of a model can be under the control 
@@ -613,55 +615,71 @@ discretized = discretize_FPKM(fpkm, colnames);
 % What will be the score associated with the reaction?
 
 % Q19 = 
-%% 3) Model reconstruction using rFASTCORMICS
-% Besides gene expression data, rFASTCORMICS needs other inputs. Below is the 
-% function:
+%% 3) Model reconstruction using rFASTCORMICS_v2
+% Besides gene expression data, rFASTCORMICS_v2 needs other inputs. Below is 
+% the function:
 % 
-% |[model, A_final] = fastcormics_RNAseq(model, data, rownames, dico, already_mapped_tag, 
-% consensus_proportion, epsilon, optional_settings)|
+% *rFastcormics4cobra_v2(model, discretized, rownames, dico)*
+%% 
+% * *model* : Model use to extract the context-specific model from.
+% * *discretized* : Matrix with _n_ rows (1 per gene) and _m_ columns (1 per 
+% sample) with 1 for expressed genes, 0 for unknown expression and -1 for unexpressed 
+% genes. 
+% * *rownames* : Cell array with the gene IDs (as many rows as the number of 
+% genes in |discretized|).
+% * *dico* :  Table with two columns, first for gene IDs in the |model| format, 
+% second for gene IDs in the |discretized| format.
+%% 
+% *Optional inputs*
+%% 
+% * *consensusProportion* : The rate of samples that have to express or not 
+% to express a gene for the gene to be considered expressed or not (default 0.9).
+% * *epsilon* : Smallest flux value that is considered nonzero (default 1e-4).
+% * *optionalSettings.func* : Cell array of reaction abbreviations that should 
+% carry a flux. It is recommended to put the objective function of your model 
+% to ensure its preservation in the context-specific model.
+% * *optionalSettings.medium* : Cell array of metabolite abbreviations that 
+% are present in the growth medium of the cells and that will be used to constrain 
+% the model.
+% * *optionalSettings.notMediumConstrained :* Reactions not included in the 
+% medium that must be retained.
+% * *biomassReactionName* : String or character array with the name of the objective/biomass 
+% reaction (default 'biomass_reaction').
+% * *fillingMediumFlag* : Fill the medium with supplementary reactions in case 
+% the provided medium is not sufficient to fulfill the objective function. 1 for 
+% active (default), 0 for inactive.
+% * *adaptiveScalingFlag* : Adaptive scaling of the flux values. 0 for inactive 
+% (default), 1 for active.
+%% 
+% *Outputs*
+%% 
+% * *contextSpecificModel* : Context-specific model, reduced to the retained 
+% reactions and associated genes.
+% * *retainedRxns* : Indices in |model| of the retained reactions.
+% * *indicesCompletedCoreOrig* : Indices in |model| of the core reactions.
+%% 
+% The complete documentation of rFastcormics_v2 can be found on github : <https://github.com/sysbiolux/rFASTCORMICS/tree/master/rFASTCORMICS%20for%20RNA-seq%20data/rFASTCORMICS_v2 
+% rFASTCORMICS/rFASTCORMICS for RNA-seq data/rFASTCORMICS_v2 at master · sysbiolux/rFASTCORMICS>.
 % 
-% |Inputs|
-%% 
-% * *model* this model will be used to extract the context-specific model from
-% * *data* the discretized data with 1 for expressed genes, 0 for unknown expression 
-% and -1 for unexpressed genes
-% * *rownames* of the data corresponding to the gene names for each row in the 
-% data
-% * *dico* a dictionary to map the gene names to the gene names in the model 
-% (provided)
-% * *already_mapped_tag* should be 0 because the data has not been mapped to 
-% the GPR rules of the model
-% * *consensus_proportion* in case several samples are used to reconstruct a 
-% model, generally 0.9
-% * *epsilon* the flux threshold value, generally 1e-4
-% * *optional_settings* a struct with several subfields such as reactions that 
-% have to be included in the model and the medium composition 
-%% 
-% Outputs
-%% 
-% * *model* context-specific model based on the input data
-% * *A_final* a vector containing the indices of the reactions to be included 
-% in the output model
-%% 
-% You can build two types of models with FASTCORMICS: either you create one 
+% You can build two types of models with FASTCORMICS_v2: either you create one 
 % model per discretized sample or you create one generic model from a set of samples. 
 % 
 % *In this tutorial, we will only be building one generic breast cancer model 
 % based on the 25 provided samples.*
 %% 
 % Create your breast cancer model based on the first column of the data and 
-% the consistent model using rFASTCORMICS. We have provided the dico and some 
+% the consistent model using rFASTCORMICS_v2. We have provided the dico and some 
 % of the optional settings for you. 
 
-load optional_settings
+load optionalSettings
 load dico
 
-already_mapped_tag = 0;
-consensus_proportion = 0.9;
+consensusProportion = 0.9;
 epsilon = 1e-4;
-biomass_rxn ='biomass_reaction'
+biomassReactionName ='biomass_reaction';
+fillingMediumFlag = 0;
 %% Question 20
-% Use the _fastcormics_RNAseq_ function to create a generic context-specific 
+% Use the _rFastcormics4cobra_v2_ function to create a generic context-specific 
 % model for breast cancer using all the discretized samples and the consistent 
 % model (not medium constrained).
 % 
@@ -674,7 +692,7 @@ biomass_rxn ='biomass_reaction'
 % ---- enter your code here, then run the Answer section to enter the answer ----
 % INPUT1 = 
 % INPUT2 = 
-[fastcormics_model, ~] = fastcormics_RNAseq(INPUT1, INPUT2, rownames, dico, biomass_rxn, already_mapped_tag, consensus_proportion, epsilon, optional_settings)
+[fastcormics_model, ~] = rFastcormics4cobra_v2(INPUT1, INPUT2, rownames, dico, consensusProportion, epsilon, optionalSettings, biomassReactionName, fillingMediumFlag)
 %% 
 % 
 %% 
@@ -686,7 +704,7 @@ biomass_rxn ='biomass_reaction'
 % INPUT1 = 
 % INPUT2 = 
 %% 
-% Note: the model is also a direct output from FASTCORMICS, however, if you 
+% Note: the model is also a direct output from FASTCORMICS_v2, however, if you 
 % create many models it is better to suppress this output as it will only take 
 % up memory and slow down your computer. Saving the model reaction in a matrix 
 % is sufficient.
@@ -716,7 +734,7 @@ find(fastcormics_model.c) % index of the objective function
 % model, so no not forget to save it.
 
 % idx = 
-fastcormics_model = changeObjective(fastcormics_model,fastcormics_model.rxns(idx)); % you need to assign a new variable to save the new model, or overwrite the existing one
+fastcormics_model = changeObjective(fastcormics_model, fastcormics_model.rxns(idx)); % you need to assign a new variable to save the new model, or overwrite the existing one
 %% 
 % Now check if the objective function was changed successfully:
 
@@ -751,7 +769,6 @@ printObjective(fastcormics_model)
 % the want to obtain the flux distribution that allows the highest production 
 % of biomass. For other optimizations, minimization might be a better option.
 
-changeCobraSolver('ibm_cplex');
 solution = optimizeCbModel(fastcormics_model,'max')
 %% 
 % The solution variable is again a structure with different fields. The field 

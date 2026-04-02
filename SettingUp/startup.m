@@ -1,7 +1,7 @@
 disp(' ') 
 disp('Hello') 
 
-% solverOK = changeCobraSolver('ibm_cplex','all');
+% solverOK = changeCobraSolver('gurobi','all');
 
 % addpath(genpath('C:\Users\hugues.escoffier\Documents\Matlab_Projects\rFASTCORMICS'))
 % clear x k currentPath
