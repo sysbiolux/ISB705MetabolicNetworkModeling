@@ -572,8 +572,8 @@ ylabel('signal'); xlabel('log2(FPKM)')
 % and optionally unknown (0) genes. The approach of discretization was shown to 
 % be the most correct. 
 
-% discretized = discretize_FPKM(fpkm, colnames,1); % with figures, will save figures in Figures folder
-discretized = discretize_FPKM(fpkm, colnames);
+% discretized = discretizeFPKM(fpkm, colnames,1); % with figures, will save figures in Figures folder
+discretized = discretizeFPKM(fpkm, colnames);
 %% 
 % *Mapping the gene expression data to reactions*
 % 
