@@ -32,8 +32,8 @@ Examples:
 - Shape is "Triangle"/"V"/"none" for reactions with positive/negative/zero flux.
 - "none" shapes get "remove" flag, others "keep".
 - Cytoscape -> open RECON3D_061123.cys
-- Import to cytoscape via: File -> Import -> Table from File -> (Select file name: metsFluxSum_log2.txt). Then: Where to Import Table Data:To a Network Collection; Import Data as: Node Table Columns; Key Column For Network: shared name. Advanced Options: Delimiter: comma. OK.
-- Size and shape mapping should automatically update network (RECON3D_061123_dataMapped.cys)
+- Import to cytoscape via: File -> Import -> Table from File -> (Select file name: metsFluxSum_log2.txt). Then: Where to Import Table Data:To a Network Collection; Import Data as: Node Table Columns; Key Column For Network: sbml id. Advanced Options: Delimiter: comma. OK.
+- Update size and shape mapping to update network (RECON3D_061123_dataMapped.cys): Choose respective imported columns. Shape: Discrete Mapping (Elipse -> Elipse; Triangle -> Triangle; V -> V; none -> Rectangle). Size: Passthrough Mapping.
 - Keep only active metabolites and reactions: Node table -> search "keep" -> invert node selection -> delete (RECON3D_061123_dataMapped_keepOnly.cys)
 - Remove cofactors: Select -> Nodes -> from ID List File -> (File name of above list: metsCofactors.txt) -> delete (RECON3D_061123_dataMapped_keepOnly_removeCo.cys)
 
