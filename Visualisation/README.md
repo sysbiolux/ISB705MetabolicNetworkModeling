@@ -22,7 +22,7 @@ Examples:
 - Blautia hydrogenotropica
 
 ##### Layout
-"Prefuse Force Directed layouot" with Default Spring Length = 20 and Default Node Mass = 1 (Settings) and "yFiles Organic Layout" often give nice results. But feel free to explore other settings and layouts.
+"Prefuse Force Directed layouot" with Default Spring Length = 10 and Default Node Mass = 5 (Settings) and "yFiles Organic Layout" often give nice results. But feel free to explore other settings and layouts.
 
 ##### Data import (fluxes and flux sums) to Recon3D - Approch I
 - Base Recon3D model: RECON3D_consistent_model.mat; RECON3D_consistent_model.xml; RECON3D_consistent_model.cys
